@@ -1,2 +1,2 @@
 # studio
-A widget for emlog plugins development.
+A widget(plugins) for emlog plugins development.
