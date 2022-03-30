@@ -39,8 +39,23 @@
     .ace_print-margin {
         display: none;
     }
-    
-
+    .file_list_li {
+        padding: 2px 2px;
+    }
+    .file_list_li:hover {
+        margin: -1px 0px;
+        padding: 2px 1px;
+        border: 1px solid #7f7f7f21;
+    }
+    .file_list_li:first-child:hover {
+        margin: 11px 0px -1px 0px;
+    }
+    .file_list_li:last-child:hover {
+        margin: 12px 0px;
+        padding: 1px 1px;
+    }
+    .icofont-simple-down
+        
     /* 夜间模式 */
     .em_studio_dark body {
         color:white;
@@ -57,18 +72,6 @@
     .em_studio_dark .bg-white a {
         color: #9899ff!important;
     }
-
-    /* 编辑器 */
-    .em_studio_dark #code {
-        background-color: #1D1F21!important;
-    }
-    .em_studio_dark .ace_gutter {
-        background-color: #25282c!important;
-    }
-    .em_studio_dark .ace_gutter-active-line {
-        background-color: #282A2E!important;
-    }
-
     .em_studio_dark #accordionSidebar {
         background-image: linear-gradient(180deg, #243c80 10%, #0f0e0e 100%)!important;
     }
@@ -90,6 +93,17 @@
         margin-left: -1px!important;
         padding-right: 8px!important;
         padding-left: 8px!important;
+    }
+    
+    /* 夜间模式 - 编辑器 */
+    .em_studio_dark #code {
+        background-color: #1D1F21!important;
+    }
+    .em_studio_dark .ace_gutter {
+        background-color: #25282c!important;
+    }
+    .em_studio_dark .ace_gutter-active-line {
+        background-color: #282A2E!important;
     }
 }
 </style>
@@ -255,9 +269,11 @@ function plugin_setting_view()
 
                 }
 
-                htmlC     = htmlC + "<li>" ;
-                htmlC     = htmlC + `${typeIcon}<a class="file_link" file_type="${type}" link="${path}" onclick="st_openFile($(this))" href="javascript:void(0);">${name}</a>`
-                htmlC     = htmlC + "</li>" ;
+                htmlC     = htmlC + `<li class="file_list_li">`
+                
+                          + `${typeIcon}<a class="file_link" file_type="${type}" link="${path}" onclick="st_openFile($(this))" href="javascript:void(0);">${name}</a>`
+                          
+                          + "</li>" ;
             }
 
         return htmlC;
