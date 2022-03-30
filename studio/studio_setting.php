@@ -79,6 +79,7 @@
         background-color: #9b9b9b!important;
     }
     .em_studio_dark #studio_header {
+        color: #ffffffd4;
         margin: -1px;
         padding: 18px;
         background: #717171!important;
