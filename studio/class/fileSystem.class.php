@@ -15,23 +15,13 @@ class filels{
     public $pathGbk;      // 路径 gbk 编码
 
     public function odir($path){
-
-        // 初始化路径
-        $this->path = $path;
-
+        $this->path = urldecode($path);
         // 如果没有路径参数，则 die
         if(!$path){die("未输入路径参数");}
 
-        // 确保以正确的文件路径编码显示
-        $this->pathChar = mb_detect_encoding($this->path,array('UTF-8','GBK','LATIN1','BIG5'));
-        $this->pathChar = strtolower($this->pathChar);
-        if($this->pathChar != 'gbk'){
-            $this->pathGbk = iconv($this->pathChar, 'gbk',$this->path );
-        }
-
         // 判断路径是否正确并返回提示
-        if(!is_dir($this->pathGbk)){die("error 不是一个正确的路径！".$this->pathGbk);}
-        $this->opendirr = opendir($this->pathGbk);
+        if(!is_dir($this->path)){die("error 不是一个正确的路径！".$this->path);}
+        $this->opendirr = opendir($this->path);
         if(!$this->opendirr){die('error 打开文件夹失败！');}
 
         // 定义数组 filesArray，以储存读取的文件列表信息
@@ -41,17 +31,10 @@ class filels{
         while($this->filee = readdir($this->opendirr)){
 
             // 确保 文件名 和 文件路径 输出是使用的正确编码
-            $charset = mb_detect_encoding($this->filee,array('UTF-8','GBK','LATIN1','BIG5'));
-            $charset = strtolower($charset);
-            if($charset != 'utf-8' || $charset != 'utf8'){
-                $this->filee = iconv($charset, 'utf-8', $this->filee);
-            }
-            $this->fileOutChar = iconv('utf-8', 'gbk', $this->filee);
-            $this->pathGbk = iconv('utf-8', 'gbk', $this->path);
-            $this->zsPath = $this->pathGbk.'/'.$this->fileOutChar;
+            $this->zsPath = $this->path.'/'.$this->filee;
 
             // 判断文件类型（文件夹或文件）
-            $this->fileStar = (is_dir($this->zsPath)) ? 'folder' : 'file' ;
+            $this->fileStar = (is_file($this->zsPath)) ? 'file' : 'folder';
 
             if($this->filee == '.' || $this->filee == '..' || $this->filee == '.DS_Store' || $this->filee == '__MACOSX' ){
                 continue;
@@ -60,18 +43,22 @@ class filels{
             $newFileInfo = array(
                 'fileName' => $this->filee,
                 'fileType' => $this->fileStar,
-                'filePath' => $this->zsPath
+                'filePath' => urlencode($this->zsPath)
             );
 
             array_push($filesArray, $newFileInfo);
         }
         closedir($this->opendirr);
 
+        
+
         // 按照文件夹和文件两种类型，进行分类排序，以保证文件夹在文件上方
         foreach ($filesArray as $key => $row) {
             $fileType[$key] = $row['fileType'];
         }
         array_multisort($fileType, SORT_DESC, $filesArray);
+
+        
 
         return $filesArray;
     }
@@ -93,7 +80,9 @@ class edit {
     public $fileput;       //文件写入
 
     public function edits($files){
-        $this->file = $files;
+
+        $this->file = urldecode($files);
+        
         if(!file_exists($this->file)){
             die("文件不存在！");
         }
@@ -124,7 +113,7 @@ class edit {
     /* 修改文件函数 */
     public function bc($filepath,$filecontent){
 
-        $this->filepath = $filepath;
+        $this->filepath = urldecode($filepath);
 
         //获取传进来的文件内容
         $this->filecontent = $filecontent;

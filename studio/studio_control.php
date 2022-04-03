@@ -16,6 +16,8 @@ $getInfo   = isset($_GET["act"]) ? addslashes($_GET["act"]) : '';
 $url       = isset($_POST["url"]) ? addslashes($_POST["url"]) : '';
 $code      = isset($_POST["code"]) ? ($_POST["code"]) : '';
 
+// $url 还需要进一步解码
+$url = urldecode($url);
 //////////////////////////
 
 switch($getInfo){

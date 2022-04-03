@@ -33,7 +33,7 @@
         margin-left:10px;
     }
     .scroll_ul {
-        overflow-x: hidden;
+        overflow-x: scroll;
         height: calc(100vh - 220px);
     }
     .ace_print-margin {
@@ -42,6 +42,7 @@
     .file_list_li {
         padding: 2px 2px;
     }
+    /* 文件列表的边框 */
     .file_list_li:hover {
         margin: -1px 0px;
         padding: 2px 1px;
@@ -54,8 +55,16 @@
         margin: 12px 0px;
         padding: 1px 1px;
     }
-    .icofont-simple-down
-        
+    .file_list_li_border {
+        padding: 1px 1px;
+        border: 1px solid #7f7f7f21;
+    }
+    /* 文件（夹）选中后边框高亮 */
+    .file_active_border {
+        padding: 1px 1px;
+        border: 1px solid red;
+    }
+
     /* 夜间模式 */
     .em_studio_dark body {
         color:white;
@@ -118,6 +127,7 @@ require_once 'class/fileSystem.class.php';
 function plugin_setting_view()
 {
     $path = "../content/plugins";
+    
     $dir = new filels();
     $file_list = $dir->odir($path);
 
@@ -320,6 +330,7 @@ function plugin_setting_view()
         // -- 如果是文件夹
         
             if($this.next("ul").length > 0) {
+                $this.parent().toggleClass("file_list_li_border");
                 $this.next("ul").remove();
                 $this.prev("span").toggleClass("icofont-simple-down");
                 return;
@@ -344,7 +355,7 @@ function plugin_setting_view()
                 $this.after(htmlC);
 
                 $this.prev("span").toggleClass("icofont-simple-down");
-
+                $this.parent().toggleClass("file_list_li_border");
             });
 
             msg("");
@@ -373,9 +384,11 @@ function plugin_setting_view()
                     type = "javascript";
                     break;
                 case 'css':
+                case 'html':
+                case 'php':
                     break;
                 default:
-                    type = "php";  // 默认使用 php 语言模式
+                    type = "markdown";  // 默认使用 markdown 语言模式
                     break;
             }
 
@@ -404,7 +417,6 @@ function plugin_setting_view()
         $("#project_list_body").toggle();
     }
 
-
 // 页面脚本运行入口
 $(document).ready(function(){
 
@@ -412,7 +424,7 @@ $(document).ready(function(){
     
     //设置默认风格和语言
     let st_theme = "<?= ($_COOKIE['em_studio_theme'] === 'dark') ? 'tomorrow_night':'clouds' ?>",
-        st_language = "javascript";
+        st_language = "markdown";
 
     emAceEditor.setTheme("ace/theme/" + st_theme);
     emAceEditor.session.setMode("ace/mode/" + st_language);
