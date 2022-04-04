@@ -1,5 +1,5 @@
 <?php
-    // 检查 cookie 信息，以确定是使用日间主题还是夜间主题
+    // 检查 cookie 信息，以确定是使用 *日间主题* 还是 *夜间主题*
     if($_COOKIE["em_studio_theme"] === 'dark'){
         echo '<html class="em_studio_dark">';
     }
@@ -33,36 +33,35 @@
         margin-left:10px;
     }
     .scroll_ul {
-        overflow-x: scroll;
+        overflow-x: auto;
         height: calc(100vh - 220px);
+        white-space: nowrap;
     }
     .ace_print-margin {
         display: none;
     }
     .file_list_li {
         padding: 2px 2px;
+        border: 1px solid rgba(0, 0, 0, 0);
     }
     /* 文件列表的边框 */
     .file_list_li:hover {
-        margin: -1px 0px;
-        padding: 2px 1px;
         border: 1px solid #7f7f7f21;
     }
-    .file_list_li:first-child:hover {
-        margin: 11px 0px -1px 0px;
-    }
-    .file_list_li:last-child:hover {
-        margin: 12px 0px;
-        padding: 1px 1px;
-    }
-    .file_list_li_border {
-        padding: 1px 1px;
+    .file_list_li_folderOpen {
         border: 1px solid #7f7f7f21;
     }
     /* 文件（夹）选中后边框高亮 */
     .file_active_border {
-        padding: 1px 1px;
-        border: 1px solid red;
+        border: 1px solid rgb(152, 152, 255)!important;
+    }
+
+    /* 选中文本颜色为透明 */
+    .file_link::selection {
+        background:transparent;
+    }
+    .file_icon {
+        margin-right:5px
     }
 
     /* 夜间模式 */
@@ -252,37 +251,37 @@ function plugin_setting_view()
 
                 nameL = name.split('.').pop();  // 获取文件后缀名
 
-                if(type == "folder")  typeIcon = `<span class="icofont-simple-right">&nbsp;</span>`;
-                
-                if(type == "file"){
-                    typeIcon = `<span class="icofont-penalty-card">&nbsp;</span>`;
+            if(type == "folder")  typeIcon = `<span class="file_icon icofont-simple-right"></span>`;
+            
+            if(type == "file"){
+                typeIcon = `<span class="file_icon icofont-penalty-card"></span>`;
 
-                    switch(nameL){
-                        case 'php':
-                        case 'html':
-                            typeIcon = `<span class="icofont-page">&nbsp;</span>`;
-                            break;
-                        case 'txt':
-                        case 'md':
-                            typeIcon = `<span class="icofont-pencil-alt-5">&nbsp;</span>`;
-                            break;
-                        case 'js':
-                            typeIcon = `<span class="icofont-comment">&nbsp;</span>`;
-                            break;
-                        default:
-                            typeIcon = `<span class="icofont-penalty-card">&nbsp;</span>`;
-                            break;
-                    }
+                switch(nameL){
+                    case 'php':
+                    case 'html':
+                        typeIcon = `<span class="file_icon icofont-page"></span>`;
+                        break;
+                    case 'txt':
+                    case 'md':
+                        typeIcon = `<span class="file_icon icofont-pencil-alt-5"></span>`;
+                        break;
+                    case 'js':
+                        typeIcon = `<span class="file_icon icofont-comment"></span>`;
+                        break;
+                    default:
+                        typeIcon = `<span class="file_icon icofont-penalty-card"></span>`;
+                        break;
+                }
 
-                    if(img_patt.test(name)) {
-                        typeIcon = `<span class="icofont-image">&nbsp;</span>`;
-                    }
+                if(img_patt.test(name)) {
+                    typeIcon = `<span class="file_icon icofont-image"></span>`;
+                }
 
                 }
 
-                htmlC     = htmlC + `<li class="file_list_li">`
+                htmlC     = htmlC + `<li class="file_list_li" onclick="st_activeFile($(this))">`
                 
-                          + `${typeIcon}<a class="file_link" file_type="${type}" link="${path}" onclick="st_openFile($(this))" href="javascript:void(0);">${name}</a>`
+                          + `${typeIcon}<a class="file_link" title="${name}" file_type="${type}" link="${path}" onclick="st_openFile($(this))" href="javascript:void(0);">${name}</a>`
                           
                           + "</li>" ;
             }
@@ -304,7 +303,7 @@ function plugin_setting_view()
             d("打开项目，传入的 php 回来的 data：\n"+data);
 
             let list_json = JSON.parse(data),
-                htmlC     = '<a href="javascript:void(0);" onclick="st_toggleFileProj()" class="file_backProject">--- 返回项目列表 ---</a><ul class="scroll_ul">';
+                htmlC     = '<a href="javascript:void(0);" onclick="st_toggleFileProj()" class="file_backProject">返回项目列表 <i class="icofont-logout"></i></a><ul class="scroll_ul">';
 
             htmlC += st_randerLi(list_json);
             htmlC += '</ul>';
@@ -321,7 +320,12 @@ function plugin_setting_view()
      * 打开文件(夹)动作
      */
 	function st_openFile($this){
+        // 阻止冒泡事件
+        event.stopPropagation();
 
+        // 删掉所有 file_active_border class 的元素的该 class
+        $(".file_active_border").removeClass("file_active_border")
+        
         // 获取文件（夹）链接
         let url = $this.attr("link");
 
@@ -330,7 +334,7 @@ function plugin_setting_view()
         // -- 如果是文件夹
         
             if($this.next("ul").length > 0) {
-                $this.parent().toggleClass("file_list_li_border");
+                $this.parent().toggleClass("file_list_li_folderOpen");
                 $this.next("ul").remove();
                 $this.prev("span").toggleClass("icofont-simple-down");
                 return;
@@ -355,7 +359,7 @@ function plugin_setting_view()
                 $this.after(htmlC);
 
                 $this.prev("span").toggleClass("icofont-simple-down");
-                $this.parent().toggleClass("file_list_li_border");
+                $this.parent().toggleClass("file_list_li_folderOpen");
             });
 
             msg("");
@@ -416,6 +420,31 @@ function plugin_setting_view()
         $("#file_list_body").toggle();
         $("#project_list_body").toggle();
     }
+    
+    
+
+    /**
+     * 激活文件（夹）动作
+     */
+    function st_activeFile($this){
+        // 阻止冒泡事件
+        event.stopPropagation();
+
+        // 如果 this 元素是已经打开的目录，则退出
+        if($this.children("ul").length > 0) return
+
+        if(event.shiftKey !== 1){
+            // 如果 shift 键没按下
+            $("html").toggleClass("trans_select");
+            window.getSelection().removeAllRanges();
+            $("html").toggleClass("trans_select");
+        }else{
+            // 如果
+        }
+
+        $this.toggleClass("file_active_border");
+        
+    }
 
 // 页面脚本运行入口
 $(document).ready(function(){
@@ -436,7 +465,7 @@ $(document).ready(function(){
     emAceEditor.setReadOnly(false);
 
     //自动换行,设置为off关闭
-    emAceEditor.setOption("wrap", "free")
+    emAceEditor.setOption("wrap", "off")
 
     //制表符默认为 4 个空格
     emAceEditor.getSession().setTabSize(4);
@@ -488,12 +517,24 @@ $(document).ready(function(){
             Cookies.set('em_studio_theme',"light");
         }else{
             // 切换至夜间时附加的脚本
-            Cookies.set('em_studio_theme',"dark");
             emAceEditor.setTheme("ace/theme/" + "tomorrow_night");
+            Cookies.set('em_studio_theme',"dark");
         }
 
         $("html").toggleClass("em_studio_dark")
 	});
+
+    // 编辑器 onchange 事件（w文件内容更改）
+    emAceEditor.session.on('change', function(delta) {
+        msg("已修改");
+
+        // 添加页面的离开提示
+        window.onbeforeunload = function (e) {
+            e = e || window.event;
+            if (e) e.returnValue = '离开页面提示';
+            return '离开页面提示';
+        }
+    });
     
 })
 </script>
