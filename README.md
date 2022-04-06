@@ -30,4 +30,6 @@ A widget(plugins) for emlog plugins development.
 
 代码改动时做出提示 ok 
 
-文件基础操作
+# 2022年04月06日
+
+分文件处理，优化了部分代码
