@@ -1,0 +1,111 @@
+.file_list_body {
+    margin-left: -25px;
+}
+.file_list_body ul,.file_backProject {
+    margin-left: 25px;
+}
+.save_code {
+    float:right;
+}
+.em_stdio_msg {
+    color:deepskyblue;
+    margin-left:10px;
+}
+.scroll_ul {
+    overflow-x: auto;
+    height: calc(100vh - 220px);
+    white-space: nowrap;
+}
+.ace_print-margin {
+    display: none;
+}
+.file_list_li {
+    padding: 2px 2px;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+/* 文件列表的边框 */
+.file_list_li:hover {
+    border: 1px solid #7f7f7f21;
+}
+.file_list_li_folderOpen {
+    border: 1px solid #7f7f7f21;
+}
+/* 文件（夹）选中后边框高亮 */
+.file_active_border {
+    border: 1px solid rgb(152, 152, 255)!important;
+}
+/* 选中文本颜色为透明 */
+.file_link::selection {
+    background:transparent;
+}
+.file_icon {
+    margin-right:5px
+}
+/* 文件操作 */
+.st_file_control {
+    margin-left: 25px;
+}
+
+
+/* -------------- 夜间模式 --------------  */
+.em_studio_dark body {
+    color:white;
+}
+.em_studio_dark a,.em_stdio_msg {
+    color:#96deff!important;
+}
+.em_studio_dark a:hover{
+    color:#c1ebff!important;
+}
+.em_studio_dark .bg-white {
+    background-color: #494949!important;
+}
+.em_studio_dark .bg-white a {
+    color: #9899ff!important;
+}
+.em_studio_dark #accordionSidebar {
+    background-image: linear-gradient(180deg, #243c80 10%, #0f0e0e 100%)!important;
+}
+.em_studio_dark #content-wrapper,body {
+    background-color: #9b9b9b!important;
+}
+.em_studio_dark #studio_header {
+    color: #ffffffd4;
+    margin: -1px;
+    padding: 18px;
+    background: #717171!important;
+    border-bottom: 1px solid #6d6d6d!important;
+}
+.em_studio_dark .card {
+    border: 1px solid #6d6d6d!important;
+}
+.em_studio_dark #studio_body {
+    background: #494949!important;
+    margin-right: -1px!important;
+    margin-left: -1px!important;
+    padding-right: 8px!important;
+    padding-left: 8px!important;
+}
+
+/* 夜间模式 - 编辑器 */
+.em_studio_dark #code {
+    background-color: #1D1F21!important;
+}
+.em_studio_dark .ace_gutter {
+    background-color: #25282c!important;
+}
+.em_studio_dark .ace_gutter-active-line {
+    background-color: #282A2E!important;
+}
+
+@media all and (min-width: 768px){
+    .navbar {
+        display: none!important;
+    }
+    .container-fluid {
+        padding-top: 20px!important;
+    }
+    footer {
+        display:none!important;
+    }
+}
