@@ -14,6 +14,8 @@
 
     /**
      * 调试
+     * 
+     * @param string data 输出的内容
      */
     function d(data){
         console.log(data)
@@ -21,6 +23,8 @@
 
     /**
      * 显示消息
+     * 
+     * @param string msg 消息内容
      */
     function msg(msg){
         $("#em_stdio_msg").html(msg);
@@ -29,8 +33,8 @@
     /**
      * 编辑器整体覆盖式的插入代码
      * 
-     * @ code:插入的内容
-     * @ type:以什么格式插入
+     * @param string code 插入的内容
+     * @param string type 以什么格式插入
      */
     function inAce(code,type){
         emAceEditor.getSession().setMode("ace/mode/" + type);
@@ -70,6 +74,8 @@
 
     /**
      * 渲染目录列表的 <li> 标签
+     * 
+     * @param string array 转换后的文件列表 json 数据
      */
     function st_randerLi(list_json){
         let htmlC = '';
@@ -110,8 +116,7 @@
                 }
 
                 typeIcon = `<span class="file_icon ${typeIcon}"></span>`;
-
-                }
+            }
 
                 htmlC     = htmlC + `<li class="file_list_li" onclick="st_activeFile($(this))">`
                 
@@ -125,6 +130,8 @@
 
     /**
      * 打开项目动作
+     * 
+     * @param string url 要打开的文件链接
      */
 	function st_openProject(url){
 		msg("打开项目中");
@@ -256,8 +263,6 @@
         $("#file_list_body").toggle();
         $("#project_list_body").toggle();
     }
-    
-    
 
     /**
      * 激活文件（夹）动作
