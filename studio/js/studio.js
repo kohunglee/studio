@@ -3,14 +3,19 @@
  */
 
     // 定义 ACE 代码编辑器对象
-    const emAceEditor = ace.edit("code"),
-          editor      = emAceEditor,
+    const emAceEditor = ace.edit("code");
+    const editor      = emAceEditor;
 
     // 定义图片文件后缀名的正则样式
-            img_patt = new RegExp(/^.+\.(gif|jpg|jpeg|bmp|png|ico|svg)/);
+    const img_patt = new RegExp(/^.+\.(gif|jpg|jpeg|bmp|png|ico|svg)/);
 
     // 定义文件在编辑器中的打开模式
     let st_file_type;
+
+    // 定义值
+    // addFileSourceUrl ：用来储存供 “添加文件” 功能使用的源 URL
+    // openProjectUrl   ：储存当前插件地址
+    let addFileSourceUrl,openProjectUrl;
 
     /**
      * 调试
@@ -37,7 +42,28 @@
      * @param {string} type 文件类别。
      * type 参数有 空 、"file" 、 "folder" 、 "html"
      */
-    function st_displayFileControl(type){
+    function st_displayFileControl(){
+
+        // 获取激活（选中）项的数目
+        let activeLen = $(".file_active_border").length;
+        let type = "";
+
+        // fileInfo = new array();
+        // for (let index = 0; index < activeLen; index++) {
+        //     // fileInfo[index] = new array();
+        //     // fileInfo[index][type] = 
+        // }
+
+        if (activeLen > 1) {
+            type = "severalFile";
+        } else {
+            let $item = $(".file_active_border")
+            type = $item.children("#fileLink").attr("file_type");
+            addFileSourceUrl = $item.children("#fileLink").attr("link");
+            d("源地址啊：" + decodeURIComponent(addFileSourceUrl));
+        }
+
+        // 控制显示
         $(".c-link").hide()
         switch (type) {
             case "file":
@@ -48,6 +74,9 @@
                 break;
             case "html":
                 $(".c-html").show()
+                break;
+            case "severalFile":
+                $(".c-sf").show()
                 break;
             default:
                 $(".c-index").show()
@@ -185,19 +214,24 @@
             htmlC += '</ul>';
             // 添加操作区 
             htmlC += `<div class="st_file_control" id="stControl"><hr>
-            <a href="javascript:void(0);" class="c-link c-file c-folder" id="st_removeFile">删除</a>
-            <a href="javascript:void(0);" class="c-link  c-folder c-index" id="st_addFile">新建文件</a>
-            <a href="javascript:void(0);" class="c-link c-folder c-index" id="st_addFolder">新建文件夹</a>
-            <a href="javascript:void(0);" class="c-link c-file c-folder" id="st_renameFile">重命名</a>
-            <a href="javascript:void(0);" class="c-link c-file c-folder" id="st_copyFile">复制</a>
-            <a href="javascript:void(0);" class="c-link c-file c-folder" id="st_cutFile">剪切</a>
-            <a href="javascript:void(0);" class="c-link c-folder c-index" id="st_pasteFile">粘贴</a>
-            <a href="javascript:void(0);" class="c-link st_c_html" id="st_renameFile">在新窗口打开</a>
+                <a href="javascript:void(0);" class="c-link c-file c-folder c-sf" id="st_copyFile">复制</a>
+                <a href="javascript:void(0);" class="c-link c-file c-folder c-sf" id="st_cutFile">剪切</a>
+                <a href="javascript:void(0);" class="c-link c-folder c-index" id="st_pasteFile">粘贴</a>
+                <a href="javascript:void(0);" class="c-link c-file c-folder c-sf" id="st_removeFile">删除</a>
+                <a href="javascript:void(0);" class="c-link c-file c-folder" id="st_renameFile">重命名</a>
+                <a href="javascript:void(0);" class="c-link  c-folder c-index" id="st_addFile" data-toggle="modal" data-target="#addFile">新建文件</a>
+                <a href="javascript:void(0);" class="c-link c-folder c-index" id="st_addFolder">新建文件夹</a>
+                <a href="javascript:void(0);" class="c-link st_c_html" id="st_renameFile">在新窗口打开</a>
             </div>`;
 
             $("#file_list_body").html(htmlC);
             st_toggleFileProj();
             st_displayFileControl(); // 默认显示 class 为 "c-index" 的项
+
+             // 更新地址
+            openProjectUrl = url.replace("content%2Fplugins%2F","");  // 删去多余字符
+            addFileSourceUrl = openProjectUrl;
+            d("源地址为：" + decodeURIComponent(addFileSourceUrl))
 		});
 
         msg("");
@@ -337,15 +371,26 @@
         /**
          * 临时测试一下单个文件（夹）的效果
          */
-        // 获取文件类型和文件地址
-        let fileType = $this.children("#fileLink").attr("file_type")
-        let fileUrl = $this.children("#fileLink").attr("link")
+        // // 获取文件类型和文件地址
+        // let fileType = $this.children("#fileLink").attr("file_type")
+        // let fileUrl = $this.children("#fileLink").attr("link")
 
-        // 记录激活文件信息
-        $("#stControl").attr("link",fileUrl);
+        // // 记录激活文件信息
+        // $("#stControl").attr("link",fileUrl);
 
         // 显示操作区
-        st_displayFileControl(fileType);
+        st_displayFileControl();
+
+        if($(".file_active_border").length == 0){
+            addFileSourceUrl = openProjectUrl;
+        }
+        // 更新 addFileSourceUrl
+        // if(addFileSourceUrl == $this.children("#fileLink").attr("link")){
+        //     addFileSourceUrl = openProjectUrl;
+        // }else{
+        //     addFileSourceUrl = $this.children("#fileLink").attr("link");
+        // }
+        d("源地址是：" + decodeURIComponent(addFileSourceUrl))
         
     }
 
@@ -440,6 +485,31 @@ $(document).ready(function(){
         }
     });
 
+    // 新建文件确定按钮被按下
+    $("#addfile-button").click(function () {
+        $.post("../content/plugins/studio/studio_control.php?act=addFile",
+            {
+                url: addFileSourceUrl + "/" + "testadd.php"
+            },
+            function(data){
+                alert(data);
+            });
+    })
+
     /* ----------- JS 事件监听结束  ----------------- */
 })
 
+
+
+
+/*
+
+$.post("../content/plugins/studio/studio_control.php?act=addFile",
+                {
+                    url:  "..%2FPastePlugin%2Fadd-file-test.php"
+                },
+                function(data){
+                    alert(data);
+                });
+
+*/

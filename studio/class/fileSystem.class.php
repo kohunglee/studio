@@ -125,5 +125,13 @@ class edit {
             return false;
         }
     }
+
+    /* 创建文件 */
+    public function addFile($url){
+        if(!file_exists($url)){
+            $addFile = fopen($url, "w");
+            return true;
+        }
+    }
 }
 ?>

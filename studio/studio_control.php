@@ -1,6 +1,6 @@
 <?php
 /**
- * 操作文件
+ * 操作文件的 API 文件
  */
 
 // 判断是否是管理员登录状态
@@ -18,7 +18,6 @@ $code      = isset($_POST["code"]) ? ($_POST["code"]) : '';
 
 // $url 还需要进一步解码
 $url = urldecode($url);
-//////////////////////////
 
 switch($getInfo){
     case 'openProject':  // 打开项目
@@ -38,9 +37,15 @@ switch($getInfo){
         break;
     case 'saveCode':  // 保存代码
         $saveCode = new edit();
-        $codeContent = $_POST['code'];
+        $codeContent = $code;
         if($saveCode->bc($url,$codeContent)){
             echo "save_code_success";
+        }
+        break;
+    case 'addFile':  // 添加文件
+        $addFile = new edit();
+        if($addFile->addFile($url)){
+            echo "add_file_success";
         }
         break;
     default:  // 直接访问，则报错

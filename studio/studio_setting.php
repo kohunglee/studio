@@ -60,6 +60,37 @@ function plugin_setting_view()
     </div>
     <a hidden onclick="window.location.href = 'plugin.php';" style="position:fixed" href="#">返回插件页</a>
 </div>
+
+<!--- < 添加文件的模态框开始 > --->
+
+  <div class="modal fade" id="addFile">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">新建文件</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        
+                123
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-success btn-sm" id="addfile-button">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--- < 添加文件的模态框结束 > --->
+
+
+
+
+
+
+
 <!-- 导入 ace 编辑器的 js 库 -->
 <script src="../content/plugins/studio/ace/ace.js?=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script> 
 <script src="../content/plugins/studio/ace/ext-language_tools.js?=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script>
