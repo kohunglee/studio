@@ -1,4 +1,8 @@
-.file_list_body {
+/**
+ * 工作室插件样式表
+ */
+
+ .file_list_body {
     margin-left: -25px;
 }
 .file_list_body ul,.file_backProject {
@@ -44,14 +48,19 @@
 /* 文件操作 */
 .st_file_control {
     margin-left: 25px;
+    text-align: center;
 }
+.c-link {
+    margin: 4px;
 
+    display: none;
+}
 
 /* -------------- 夜间模式 --------------  */
 .em_studio_dark body {
     color:white;
 }
-.em_studio_dark a,.em_stdio_msg {
+.em_studio_dark a,.em_studio_dark .em_stdio_msg {
     color:#96deff!important;
 }
 .em_studio_dark a:hover{
@@ -98,6 +107,7 @@
 .em_studio_dark .ace_gutter-active-line {
     background-color: #282A2E!important;
 }
+/* -------------- 夜间模式结束 --------------  */
 
 @media all and (min-width: 768px){
     .navbar {
