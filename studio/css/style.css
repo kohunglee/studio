@@ -54,7 +54,6 @@
 }
 .c-link {
     margin: 6px;
-
     display: none;
 }
 
@@ -108,6 +107,20 @@
 }
 .em_studio_dark .ace_gutter-active-line {
     background-color: #282A2E!important;
+}
+
+/* 模态框 */
+.em_studio_dark .modal-content {
+    background-color: #797979c7!important;
+}
+.em_studio_dark .modal-body-input {
+    color: rgb(220 237 255);
+    border: unset;
+    border-radius: unset;
+    background-color: #191919c2!important;
+}
+.em_studio_dark .modal-body-input:focus {
+    color: rgb(220 237 255);
 }
 /* -------------- 夜间模式结束 --------------  */
 

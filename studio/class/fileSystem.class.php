@@ -16,6 +16,7 @@ class filels{
 
     public function odir($path){
         $this->path = urldecode($path);
+        
         // 如果没有路径参数，则 die
         if(!$path){die("未输入路径参数");}
 
@@ -49,8 +50,6 @@ class filels{
             array_push($filesArray, $newFileInfo);
         }
         closedir($this->opendirr);
-
-        
 
         // 按照文件夹和文件两种类型，进行分类排序，以保证文件夹在文件上方
         foreach ($filesArray as $key => $row) {
@@ -112,7 +111,6 @@ class edit {
     
     /* 修改文件函数 */
     public function bc($filepath,$filecontent){
-
         $this->filepath = urldecode($filepath);
 
         //获取传进来的文件内容

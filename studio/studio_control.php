@@ -46,6 +46,8 @@ switch($getInfo){
         $addFile = new edit();
         if($addFile->addFile($url)){
             echo "add_file_success";
+        }else{
+            echo "the_file_had_exists";
         }
         break;
     default:  // 直接访问，则报错

@@ -22,7 +22,6 @@ function plugin_setting_view()
     $path = "../content/plugins";
     $dir = new filels();
     $file_list = $dir->odir($path);
-
 ?>
 <div class="card ">
     <div class="card-header py-3" id="studio_header">
@@ -67,13 +66,11 @@ function plugin_setting_view()
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">新建文件</h4>
+          <h4 class="modal-title">请输入文件名</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-        
-                123
-
+            <input class="form-control modal-body-input" name="new-file-name" id="new-file-name" value="新建文件.php">
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>
@@ -84,12 +81,6 @@ function plugin_setting_view()
   </div>
 
 <!--- < 添加文件的模态框结束 > --->
-
-
-
-
-
-
 
 <!-- 导入 ace 编辑器的 js 库 -->
 <script src="../content/plugins/studio/ace/ace.js?=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script> 
