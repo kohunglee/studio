@@ -8,7 +8,7 @@
     $st_ver = 100;
     $st_ver = rand(2,100);
 ?>
-<link rel="stylesheet" type="text/css" href="../content/plugins/studio/css/style.css?=<?= $st_ver ?>">
+<link rel="stylesheet" type="text/css" href="../content/plugins/studio/css/style.css?v=<?= $st_ver ?>">
 <?php
 !defined('EMLOG_ROOT') && exit('access deined!');
 
@@ -62,19 +62,19 @@ function plugin_setting_view()
 
 <!--- < 添加文件的模态框开始 > --->
 
-  <div class="modal fade" id="addFile">
+  <div class="modal fade" id="st-modal">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">请输入文件名</h4>
+          <h4 class="modal-title" id="st_mod_title">title</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-            <input class="form-control modal-body-input" name="new-file-name" id="new-file-name" value="新建文件.php">
+            <input class="form-control modal-body-input" name="new-file-name" id="st_mod_input" placeholder=""  >
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>
-            <button type="button" class="btn btn-success btn-sm" id="addfile-button">确定</button>
+            <button type="button" class="btn btn-success btn-sm" id="st_mod_ok">确定</button>
         </div>
       </div>
     </div>
@@ -83,9 +83,9 @@ function plugin_setting_view()
 <!--- < 添加文件的模态框结束 > --->
 
 <!-- 导入 ace 编辑器的 js 库 -->
-<script src="../content/plugins/studio/ace/ace.js?=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script> 
-<script src="../content/plugins/studio/ace/ext-language_tools.js?=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script>
+<script src="../content/plugins/studio/ace/ace.js?v=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script> 
+<script src="../content/plugins/studio/ace/ext-language_tools.js?v=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script>
 <!-- 导入工作室的 js -->
-<script src="../content/plugins/studio/js/studio.js?=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script>
+<script src="../content/plugins/studio/js/studio.js?v=<?= $st_ver ?>" type="text/javascript" charset="utf-8"></script>
 <?php
 }

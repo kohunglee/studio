@@ -16,7 +16,7 @@ $getInfo   = isset($_GET["act"]) ? addslashes($_GET["act"]) : '';
 $url       = isset($_POST["url"]) ? addslashes($_POST["url"]) : '';
 $code      = isset($_POST["code"]) ? ($_POST["code"]) : '';
 
-// $url 还需要进一步解码
+// $url 进一步解码
 $url = urldecode($url);
 
 switch($getInfo){
@@ -48,6 +48,38 @@ switch($getInfo){
             echo "add_file_success";
         }else{
             echo "the_file_had_exists";
+        }
+        break;
+    case 'addFolder':  // 添加文件夹
+        $addFolder = new edit();
+        if($addFolder->addFolder($url)){
+            echo "add_file_success";
+        }else{
+            echo "the_file_had_exists";
+        }
+        break;
+    case 'removeF':  // 删除文件
+        $removeF = new edit();
+        if($removeF->removeF($url)){
+            echo "删除成功";
+        }else{
+            echo "删除失败";
+        }
+        break;
+    case 'removeFolder':  // 删除文件夹
+        $rmoveFolder = new edit();
+        if($rmoveFolder->rmoveFolder($url)){
+            echo "删除成功";
+        }else{
+            echo "删除失败";
+        }
+        break;
+    case 'rename':  // 删除文件夹
+        $rename = new edit();
+        if($rename->rename($url)){
+            echo "重命名成功";
+        }else{
+            echo "重命名失败";
         }
         break;
     default:  // 直接访问，则报错

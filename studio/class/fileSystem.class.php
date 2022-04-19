@@ -129,7 +129,88 @@ class edit {
         if(!file_exists($url)){
             $addFile = fopen($url, "w");
             return true;
+        }else{
+            return false;
         }
     }
+
+    /* 创建文件夹 */
+    public function addFolder($url){
+        if(!is_dir($url)){
+            @mkdir($url);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /* 删除文件 */
+    public function removeF($url){
+        $file = $url;
+        if(file_exists($file)){
+            if(unlink($file)){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+    
+    /* 重命名 */
+    public function rename($url){
+        $file = $url;
+        if(file_exists($file)){
+            if(rename($file,'newtest.txt')){
+                echo $file.' 重命名成功！';
+            }else{
+                echo $file.' 重命名失败！';
+            }
+        }else{
+            echo $file.' 不存在！';
+        }
+    }
+
+    /* 删除文件夹 */
+    public function rmoveFolder($url){
+        // 遍历目录，递归删除
+        $path = $url;
+
+        // 文件夹不存在，返回 FALSE
+        if(!is_dir($url)){
+            return false;
+        }
+
+        function deldir($path){
+            //如果是目录则继续
+            if(is_dir($path)){
+                //扫描一个文件夹内的所有文件夹和文件并返回数组
+                $p = scandir($path);
+                //如果 $p 中有两个以上的元素则说明当前 $path 不为空
+                if(count($p)>2){
+                    foreach($p as $val){
+                        //排除目录中的.和..
+                        if($val !="." && $val !=".."){
+                            //如果是目录则递归子目录，继续操作
+                            if(is_dir($path.$val)){
+                                //子目录中操作删除文件夹和文件
+                                deldir($path.$val.'/');
+                            }else{
+                                //如果是文件直接删除
+                                unlink($path.$val);
+                            }
+                        }
+                    }
+                }
+            }
+            //删除目录
+            return rmdir($path);
+        }
+        //调用函数，传入路径
+        deldir($path);
+        return true;
+    }
+    
 }
 ?>
